@@ -13,6 +13,7 @@ NOTE:
 Some specific functions (at least on Windows 10) will appear to be hooked but not actually be hooked - they are simply redirects (so the function does not exist inside ntdll directly for example).  You can confirm this with WinDbg.
 
 These 7 functions on Windows 10 are:
+```
 ZwQuerySystemTime
 NtdllDialogWndProc_W
 NtdllDiaglogWndProc_A
@@ -20,6 +21,7 @@ NtdllDefWindowProc_W
 NtdllDefWindowProc_A
 NtQuerySystemTime
 NtGetTickCount
+```
 
 ## Requirements
 I built this tool with 2019 Visual Studio.
