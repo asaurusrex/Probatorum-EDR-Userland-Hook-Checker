@@ -1,4 +1,4 @@
-# EDR_Userland_Hook_Checker
+# EDR Userland Hook Checker
 Project to check which Nt/Zw functions your local EDR is hooking.  Most credit for this code goes to SolomonSklash, who has great blogs on a variety of security topics (https://www.solomonsklash.io).  He wrote most of this code; I just cleaned it up a bit.
 
 ## Disclaimer
