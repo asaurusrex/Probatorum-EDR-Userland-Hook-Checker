@@ -1,5 +1,5 @@
-# EDR Userland Hook Checker
-Project to check which Nt/Zw functions your local EDR is hooking.  Most credit for this code goes to SolomonSklash, who has great blogs on a variety of security topics (https://www.solomonsklash.io).  He wrote most of this code; I just cleaned it up a bit.
+# Probatorum EDR Userland Hook Checker
+Probatorum will check which Nt/Zw functions your local EDR is hooking.  Most credit for this code goes to SolomonSklash, who has great blogs on a variety of security topics (https://www.solomonsklash.io).  He wrote most of this code; I just cleaned it up a bit.
 
 ## Disclaimer
 DO NOT use this project for purposes other than legitimate red teaming/pentesting jobs, or research.  DO NOT use this for illegal activity of any kind, and know that this project is intended for research purposes and to help advance the missions of both red and blue teams.
