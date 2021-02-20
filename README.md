@@ -10,7 +10,7 @@ EDR_Userland_Hook_Checker is designed to provide a list of Nt/Zw functions which
 Once compiled, simply run the resulting .exe on your local Windows endpoint which is being monitored by EDR.
 
 NOTE:
-Some specific functions (at least on Windows 10) will appear to be hooked but not actually be hooked - they are simply redirects (so the function does not exist inside ntdll directly for example).  You can confirm this with WinDbg.
+Some specific functions (at least on Windows 10) will appear to be hooked but not actually be hooked - they are simply redirects (so the function does not exist inside ntdll directly).  You can confirm this with WinDbg.
 
 These 7 functions on Windows 10 are:
 ```
