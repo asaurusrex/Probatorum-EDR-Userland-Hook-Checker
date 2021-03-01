@@ -24,7 +24,7 @@ int nClean = 0;
 
 
 /*   Find the address of a loaded module   */
-UINT_PTR FindDLLByName(wchar_t* searchDLL) {
+UINT_PTR FindDLLByName(wchar_t* searchDLL, BOOLEAN verbose) {
 
     PPEB Peb = NULL;
     PPEB_LDR_DATA Loader = NULL;
@@ -55,7 +55,9 @@ UINT_PTR FindDLLByName(wchar_t* searchDLL) {
 
         // Check if current DLL matches search DLL
         wchar_t* result = wcsstr(dllName, searchDLL);
-
+        if (verbose) {
+            printf("[*] %ws\n", dllName);
+        }
         if (result != NULL)
         {
             return dllAddress;
@@ -144,7 +146,7 @@ FARPROC FindProcAddress(UINT_PTR uiLibraryAddress, LPCSTR lpProcName) {
     return fpResult;
 }
 
-void ListFunctionAddresses(UINT_PTR pLibraryAddress, char* szDllName) {
+void ListFunctionAddresses(UINT_PTR pLibraryAddress, char* szDllName, BOOLEAN verbose) {
 
     /*  Make sure the DLL address is not null  */
     if (pLibraryAddress == (UINT_PTR)NULL)
@@ -211,12 +213,14 @@ void ListFunctionAddresses(UINT_PTR pLibraryAddress, char* szDllName) {
 
             if (correct_bytes[0] == int(assemblyBytes[0]) && correct_bytes[1] == int(assemblyBytes[1]) && correct_bytes[2] == int(assemblyBytes[2]) && correct_bytes[3] == int(assemblyBytes[3]))
             {
-                printf("\t[*]%s has NOT been hooked!\n", szExportedFunctionName);
+                if (verbose) {
+                    printf("\t[-]%s has NOT been hooked!\n", szExportedFunctionName);
+                }
                 nClean++;
             }
             else
             {
-                printf("\t[*] %s HAS been hooked!\n", szExportedFunctionName);
+                printf("\t[+] %s HAS been hooked!\n", szExportedFunctionName);
                 printf("\t\t");
                 for (int i = 0; i < 25; i++)
                 {
@@ -235,12 +239,14 @@ void ListFunctionAddresses(UINT_PTR pLibraryAddress, char* szDllName) {
 
             if (correct_bytes[0] == int(assemblyBytes[0]) && correct_bytes[1] == int(assemblyBytes[1]) && correct_bytes[2] == int(assemblyBytes[2]) && correct_bytes[3] == int(assemblyBytes[3]))
             {
-                printf("\t[*]%s has NOT been hooked!\n", szExportedFunctionName);
+                if (verbose) {
+                    printf("\t[-]%s has NOT been hooked!\n", szExportedFunctionName);
+                }
                 nClean++;
             }
             else
             {
-                printf("\t[*] %s HAS been hooked!\n", szExportedFunctionName);
+                printf("\t[+] %s HAS been hooked!\n", szExportedFunctionName);
                 printf("\t\t");
                 for (int i = 0; i < 25; i++)
                 {
@@ -271,7 +277,7 @@ void ListFunctionAddresses(UINT_PTR pLibraryAddress, char* szDllName) {
     }
 }
 
-void ListFunctionAddresses2(UINT_PTR pLibraryAddress, char* szDllName) {
+void ListFunctionAddresses2(UINT_PTR pLibraryAddress, char* szDllName, BOOLEAN verbose) {
 
     /*  Make sure the DLL address is not null  */
     if (pLibraryAddress == (UINT_PTR)NULL)
@@ -336,52 +342,56 @@ void ListFunctionAddresses2(UINT_PTR pLibraryAddress, char* szDllName) {
         {
             if (correct_bytes[0] == assemblyBytes[0] && correct_bytes[1] == assemblyBytes[1] && correct_bytes[2] == assemblyBytes[2] && correct_bytes[3] == assemblyBytes[3])
             {
-                // printf( "\t[*]%s has NOT been hooked!\n", szExportedFunctionName );
+                if (verbose) {
+                    printf("\t[-]%s has NOT been hooked!\n", szExportedFunctionName);
+                }
                 nClean++;
             }
             else
             {
-                printf("\t[*] %s HAS been hooked!\n", szExportedFunctionName);
-                printf("\t\t");
-                for (int i = 0; i < 25; i++)
-                {
-                    printf("%02hhX ", pProcAddress[i]);
-                }
-                printf("\n");
-                nHooked++;
-            }
-
-        }
-        /*  Check if function is Zw*  */
-        else if (szExportedFunctionName[0] == 'Z' && szExportedFunctionName[1] == 'w')
-        {
-            if (correct_bytes[0] == assemblyBytes[0] && correct_bytes[1] == assemblyBytes[1] && correct_bytes[2] == assemblyBytes[2] && correct_bytes[3] == assemblyBytes[3])
-            {
-                // printf( "\t[*]%s has NOT been hooked!\n", szExportedFunctionName );
-                nClean++;
-            }
-            else
-            {
-                printf("\t[*] %s HAS been hooked!\n", szExportedFunctionName);
-                printf("\t\t");
-                for (int i = 0; i < 25; i++)
-                {
-                    printf("%02hhX ", pProcAddress[i]);
-                }
-                printf("\n");
-                nHooked++;
-            }
-        }
-        /*  Deal with Win32 APIs  */
-        else
-        {
-            printf("\t[*] %s\n", szExportedFunctionName);
+            printf("\t[+] %s HAS been hooked!\n", szExportedFunctionName);
             printf("\t\t");
             for (int i = 0; i < 25; i++)
             {
                 printf("%02hhX ", pProcAddress[i]);
             }
             printf("\n");
+            nHooked++;
+            }
+
+        }
+        /*  Check if function is Zw*  */
+        else if (szExportedFunctionName[0] == 'Z' && szExportedFunctionName[1] == 'w')
+        {
+        if (correct_bytes[0] == assemblyBytes[0] && correct_bytes[1] == assemblyBytes[1] && correct_bytes[2] == assemblyBytes[2] && correct_bytes[3] == assemblyBytes[3])
+        {
+            if (verbose) {
+                printf("\t[-]%s has NOT been hooked!\n", szExportedFunctionName);
+            }
+            nClean++;
+        }
+        else
+        {
+            printf("\t[+] %s HAS been hooked!\n", szExportedFunctionName);
+            printf("\t\t");
+            for (int i = 0; i < 25; i++)
+            {
+                printf("%02hhX ", pProcAddress[i]);
+            }
+            printf("\n");
+            nHooked++;
+        }
+        }
+        /*  Deal with Win32 APIs  */
+        else
+        {
+        printf("\t[*] %s\n", szExportedFunctionName);
+        printf("\t\t");
+        for (int i = 0; i < 25; i++)
+        {
+            printf("%02hhX ", pProcAddress[i]);
+        }
+        printf("\n");
         }
 
         /*  Get the next exported function name, using pointer addition  */
@@ -433,22 +443,53 @@ LPVOID MapDLL(char* szDllPath)
 
 }
 
-int main()
+int main(int argc, char** argv)
 {
+    BOOLEAN verbose = false;
+    BOOLEAN unhook = false;
+    for (int i = 1; i < argc; ++i){
+        if ((strcmp(argv[i], "-help") == 0) || (strcmp(argv[i], "-h")) == 0) {
+            printf("\nUsage : %s <options>\n\nOptions :\n -d or -debug\t: to show unhooked functions also\n -u or -unhook\t: to load shellycoat_x64.dll unhooker (https://github.com/slaeryan/AQUARMOURY/) \n -h or -help\t: to show this message\n",argv[0]);
+            exit(0);
+        }
+        else if ((strcmp(argv[i], "-d") == 0) || (strcmp(argv[i], "-debug")) == 0) {
+            verbose = true;
+        } else if ((strcmp(argv[i], "-u") == 0) || (strcmp(argv[i], "-unhook")) == 0) {
+            unhook = true;
+        }
+        else {
+            printf("Unrecognized option\nUsage : %s -h for usage\n",argv[0]);
+            exit(1);
+            return 1;
+        }
+
+    }
+
+    if (unhook) {
+        HINSTANCE hinstLib = LoadLibrary(TEXT("shellycoat_x64.dll"));
+        if (hinstLib != NULL) {
+            printf("[*] Loaded shellycoat_x64.dll to Unhook \n");
+        }
+        else {
+            printf("[*] Error no shellycoat_x64.dll found !\n");
+            exit(1);
+        }
+    }
+    printf("[*] ntdll.dll\n");
     // LPVOID pMappedDllAddress = MapDLL( "c:\\windows\\system32\\kernel32.dll" );
     LPVOID pMappedDllAddress = MapDLL((char*)"c:\\windows\\system32\\ntdll.dll");
     printf("[*] pMappedDllAddress 0x%p\n", pMappedDllAddress);
 
-    LPVOID pLocalDllAddress = (LPVOID)FindDLLByName((wchar_t*)L"ntdll.dll");
+    LPVOID pLocalDllAddress = (LPVOID)FindDLLByName((wchar_t*)L"ntdll.dll", (BOOLEAN)verbose);
     printf("[*] pLocalDllAddress  0x%p\n", pLocalDllAddress);
 
     // ListFunctionAddresses( pLocalDllAddress, "ntdll.dll" );
-    ListFunctionAddresses((UINT_PTR)pMappedDllAddress, (char*)"ntdll.dll");
+    ListFunctionAddresses((UINT_PTR)pMappedDllAddress, (char*)"ntdll.dll", (BOOLEAN)verbose);
 
     printf("[*] %d hooked functions found.\n", nHooked);
     printf("[*] %d clean functions found.\n", nClean);
 
 
-    Sleep(10000);
+    // Sleep(10000);
     return 0;
 }
