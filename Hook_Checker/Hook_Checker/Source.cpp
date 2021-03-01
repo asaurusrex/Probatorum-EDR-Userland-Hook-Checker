@@ -222,11 +222,13 @@ void ListFunctionAddresses(UINT_PTR pLibraryAddress, char* szDllName, BOOLEAN ve
             {
                 printf("\t[+] %s HAS been hooked!\n", szExportedFunctionName);
                 printf("\t\t");
-                for (int i = 0; i < 25; i++)
-                {
-                    printf("%02hhX ", pProcAddress[i]);
+                if (verbose) {
+                    for (int i = 0; i < 25; i++)
+                    {
+                        printf("%02hhX ", pProcAddress[i]);
+                    }
+                    printf("\n");
                 }
-                printf("\n");
                 nHooked++;
             }
 
@@ -248,11 +250,13 @@ void ListFunctionAddresses(UINT_PTR pLibraryAddress, char* szDllName, BOOLEAN ve
             {
                 printf("\t[+] %s HAS been hooked!\n", szExportedFunctionName);
                 printf("\t\t");
-                for (int i = 0; i < 25; i++)
-                {
-                    printf("%02hhX ", pProcAddress[i]);
+                if (verbose) {
+                    for (int i = 0; i < 25; i++)
+                    {
+                        printf("%02hhX ", pProcAddress[i]);
+                    }
+                    printf("\n");
                 }
-                printf("\n");
                 nHooked++;
             }
         }
