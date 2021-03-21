@@ -5,9 +5,9 @@ Probatorum will check which Nt/Zw functions your local EDR is hooking.  Most cre
 DO NOT use this project for purposes other than legitimate red teaming/pentesting jobs, or research.  DO NOT use this for illegal activity of any kind, and know that this project is intended for research purposes and to help advance the missions of both red and blue teams.
 
 ## Purpose 
-EDR_Userland_Hook_Checker is designed to provide a list of Nt/Zw functions which are hooked by your local EDR.  You can either compile the included project yourself, or you can run the pre-compiled binary in /EDR_Userland_Hook_Checker/Hook_Checker/x64/Debug/Hook_Checker.exe.  I recommend you compile yourself as a Release build.  
+EDR_Userland_Hook_Checker is designed to provide a list of Nt/Zw functions which are hooked by your local EDR.  You can either compile the included project yourself, or you can run the pre-compiled binary called Probatorum_Hook_Checker.exe.  This is a 64-bit Release build which should work on multiple versions of Windows.  It has been tested on Windows 10.  Run the .exe on your local Windows endpoint which is being monitored by EDR to get your results.
 
-Once compiled, simply run the resulting .exe on your local Windows endpoint which is being monitored by EDR.
+
 
 NOTE:
 Some specific functions (at least on Windows 10) will appear to be hooked but not actually be hooked - they are simply redirects (so the function does not exist inside ntdll directly).  You can confirm this with WinDbg.
